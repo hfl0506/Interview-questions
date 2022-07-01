@@ -48,7 +48,7 @@
    ```html
    <span style="background-color: #FFFF00">Yellow text.</span>
    ```
-8. Briefly describe the correct usage of the following HTML5 semantic elements: <header>, <article>, <section>, <footer>
+8. Briefly describe the correct usage of the following HTML5 semantic elements: `<header>, <article>, <section>, <footer>`
    - header is used to contain introductory and navigational information about a section of the page. This can include the section heading, the author's name, time and date of publication, table of contents, or other navigational information.
    - article is meant to house a self-contained composition that can logically be independently recreated outside of the page without losing it's meaning. Individual blog posts or news stories are good examples.
    - section is a flexible container for holding content that shares a common informational theme or purpose.
@@ -80,7 +80,7 @@
     console.log(input.value);
     ```
 12. When is it appropriate to use the small element ?
-    - The <small> HTML element represents side-comments and small print, like copyright and legal text, independent of its styled presentation. In general, it renders text within it one font-size smaller, such as from small to x-small.
+    - The `<small>` HTML element represents side-comments and small print, like copyright and legal text, independent of its styled presentation. In general, it renders text within it one font-size smaller, such as from small to x-small.
 13. Explain the difference between block elements and inline elements.
     - Block elements: They consume the entire width available irrespective of their sufficiency. They always start in a new line and have top and bottom margins. It does not contain any other elements next to it.
       etc:
@@ -123,7 +123,7 @@
     </svg>
     ```
 
-    - header and footer: there is no longer a need to identify the two elements with a <div> tag. Footer is placed at the end of the web page while header is placed at the start of the web page. With this tag, browser will know load which one first.
+    - header and footer: there is no longer a need to identify the two elements with a `<div>` tag. Footer is placed at the end of the web page while header is placed at the start of the web page. With this tag, browser will know load which one first.
 
     ```html
     <html>
@@ -234,11 +234,11 @@
     ```
     - There are `ltr`, `trl` and `auto` for the attribute values, ltr refer to left-to-right text direction and default,
       trl refer to right-to-left text direction and auto is Let the browser figure out the text direction, based on the content (only recommended if the text direction is unknown)
-21. What are defer and async attributes on a <script> tag ?
+21. What are defer and async attributes on a `<script>` tag ?
     - `<script async>` are executed as soon as the script is loaded, so it doesn't guarantee the order of execution (a script you included at the end may execute before the first script file )
     - `<script defer>` are guarantees the order of execution in which they appear in the page.
-22. What is the difference between <section> and <div> ?
-    - `<section>` represents a generic section of a document or application. A section, in this context, is a thematic grouping of content. Each section should be identified, typically by including a heading(h1-h6 element) as a child of the <section> element.
+22. What is the difference between `<section>` and `<div>` ?
+    - `<section>` represents a generic section of a document or application. A section, in this context, is a thematic grouping of content. Each section should be identified, typically by including a heading(h1-h6 element) as a child of the `<section>` element.
     - `<div>` has no special meaning at all. It represents its children. It can be used with the class, lang, and title attributes to mark up semantics common to a group of consecutive elements.
 23. Where and why is the rel="noopener" attribute used ?
 
@@ -248,9 +248,9 @@
       ```
     - The reason for using this especially useful when opening untrusted links, in order to ensure they cannot tamper with the originating document via the Window.opener property (see About rel=noopener for more details), while still providing the Referer HTTP header (unless noreferrer is used as well).
 
-24. Can a web page contain multiple <header> elements ? What about <footer> elements ?
+24. Can a web page contain multiple `<header>` elements ? What about `<footer>` elements ?
 
-    - Yes, both <header> and <footer> can be added multiple times in a webpage. Both of these tags are designed to serve a crucial purpose in relation to their parent section. Not only the page <body> contains a header and a footer, but every <section> and <article> also contains these two, although the use of multiple footers is always not required.
+    - Yes, both `<header> and <footer>` can be added multiple times in a webpage. Both of these tags are designed to serve a crucial purpose in relation to their parent section. Not only the page `<body>` contains a header and a footer, but every `<section>` and `<article>` also contains these two, although the use of multiple footers is always not required.
 
 25. What is WebSQL ?
 
@@ -339,7 +339,7 @@
       2. SGML application which is Standard Generalized Markup Language.
       3. not case sensitive.
       4. has similar document format.
-      5. open tags accepted, etc: <br>.
+      5. open tags accepted, etc: `<br>`.
       6. less expressive than XHTML.
       7. not mandatory for single root element.
       8. all content can be included in the body element.
@@ -434,9 +434,9 @@
       tells the browser to display the small, medium or large .jpg graphic depending on the client's resolution. Browser will serve specified img when user's closest resolution is.
     - `srcsets` solve the problem whereby you want to serve smaller image files to narrow screen devices, as they don't need huge images like desktop displays do — and also optionally that you want to serve different resolution images to high density/low-density screens.
 38. What is the purpose of "main" element ?
-    - The <main> HTML element represents the dominant content of the <body> of a document.
+    - The `<main>` HTML element represents the dominant content of the `<body>` of a document.
     - The main content area consists of content that is directly related to or expands upon the central topic of a document, or the central functionality of an application.
-    - The content of a <main> element should be unique to the document. Content that is repeated across a set of documents or document sections such as sidebars, navigation links, copyright information, site logos, and search forms shouldn't be included unless the search form is the main function of the page.
+    - The content of a `<main>` element should be unique to the document. Content that is repeated across a set of documents or document sections such as sidebars, navigation links, copyright information, site logos, and search forms shouldn't be included unless the search form is the main function of the page.
 39. What is an HTML preprocessor and are you using it ?
     - Pre-processor is a program that accepts one form of data input & converts it to another form of input data, usually in HTML & CSS. The pre-processor is made for the purpose of including new features with the existing ones without violating the browser compatibility.
     - HAML Pre-processor: Haml stands for HTML Abstraction Markup Language, created by Hampton Catlin and the only objective behind creating it is to make the markup beautiful.
@@ -472,7 +472,7 @@
     - Lossless WebP supports transparency (also known as alpha channel) at a cost of just 22% additional bytes. For cases when lossy RGB compression is acceptable, lossy WebP also supports transparency, typically providing 3× smaller file sizes compared to PNG.
 45. Why do I need a doctype and what does it do ?
     - All browsers need the doctyp. Without the DOCTYPE you are forcing the browsers to render in Quirks Mode.
-    - The DOCTYPE declaration is <!DOCTYPE html> and is case-insensitive in the HTML syntax. DOCTYPEs from earlier versions of HTML were longer because the HTML language was SGML-based and therefore required a reference to a DTD. With HTML5 this is no longer the case and the DOCTYPE is only needed to enable standards mode for documents written using the HTML syntax. Browsers already do this for <!DOCTYPE html>.
+    - The DOCTYPE declaration is `<!DOCTYPE html>` and is case-insensitive in the HTML syntax. DOCTYPEs from earlier versions of HTML were longer because the HTML language was SGML-based and therefore required a reference to a DTD. With HTML5 this is no longer the case and the DOCTYPE is only needed to enable standards mode for documents written using the HTML syntax. Browsers already do this for `<!DOCTYPE html>`.
 46. What's the difference between Full Standard, Almost Standard and Quirks Mode ?
     - Quirks modes: Layout emulates non-standard behavior as supported by old browsers.
     - Almost standard modes: A small number of quirks/old behavior are supported while rendering the layout.
@@ -488,14 +488,14 @@
       keyparams="pqg-params"
     ></keygen>
     ```
-48. Why is it generally a good idea to position CSS <link>s between <head> </head> and JS <script> just before <body>? Do you know any exceptions ?
+48. Why is it generally a good idea to position CSS `<link>` between `<head>` `</head>` and JS `<script>` just before `<body>`? Do you know any exceptions ?
     - The css files are placed in the "head" so that they load and the page is seen as it should be.
     - The Javascript files are placed before closing the "body", so that they enhance their function once the entire page is loaded.
 49. What are Web Components ?
     - Web Components aims to solve such problems — it consists of three main technologies, which can be used together to create versatile custom elements with encapsulated functionality that can be reused wherever you like without fear of code collisions.
     1. Custom elements: A set of JavaScript APIs that allow you to define custom elements and their behavior, which can then be used as desired in your user interface.
     2. Shadow DOM: A set of JavaScript APIs for attaching an encapsulated "shadow" DOM tree to an element — which is rendered separately from the main document DOM — and controlling associated functionality. In this way, you can keep an element's features private, so they can be scripted and styled without the fear of collision with other parts of the document.
-    3. HTML templates: The <template> and <slot> elements enable you to write markup templates that are not displayed in the rendered page. These can then be reused multiple times as the basis of a custom element's structure.
+    3. HTML templates: The `<template>` and `<slot>` elements enable you to write markup templates that are not displayed in the rendered page. These can then be reused multiple times as the basis of a custom element's structure.
 50. What is an IndexedDB ?
 
     - ndexedDB is a transactional database system, like an SQL-based RDBMS. However, unlike SQL-based RDBMSes, which use fixed-column tables, IndexedDB is a JavaScript-based object-oriented database. IndexedDB lets you store and retrieve objects that are indexed with a key; any objects supported by the structured clone algorithm can be stored.
