@@ -83,9 +83,11 @@
     - The <small> HTML element represents side-comments and small print, like copyright and legal text, independent of its styled presentation. In general, it renders text within it one font-size smaller, such as from small to x-small.
 13. Explain the difference between block elements and inline elements.
     - Block elements: They consume the entire width available irrespective of their sufficiency. They always start in a new line and have top and bottom margins. It does not contain any other elements next to it.
-      etc: <h1>-<h6>,<div>,<hr>,<li>,<ul>,<ol>,<p>,<table>,<header>,<nav>,<footer>,<main>,<section>,<article>,<aside>
+      etc:
+      `<h1>-<h6>,<div>,<hr>,<li>,<ul>,<ol>,<p>,<table>,<header>,<nav>,<footer>,<main>,<section>,<article>,<aside>`
     - Inline elements: They occupy only enough width that is sufficient to it and allows other elements next to it which are inline. Inline elements don't start from a new line and don't have top and bottom margins as block elements have.
-      etc:<a>,<br>,<script>,<input>,<img>,<span>,<b>,<label>
+      etc:
+      `<a>,<br>,<script>,<input>,<img>,<span>,<b>,<label>`
 14. Explain almost standard, full standard and quirks mode
     - Quirks modes: Layout emulates non-standard behavior as supported by old browsers.
     - Almost standard modes: A small number of quirks/old behavior are supported while rendering the layout.
