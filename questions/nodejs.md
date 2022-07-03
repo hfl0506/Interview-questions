@@ -1086,51 +1086,45 @@
     - Reusability: Since the application is divided into multiple modules that are assigned a single task, they can be reused in the application multiple times whenever the need be. For example, an application requiring the conversion of minutes into seconds multiple times might define this conversion as a separate function, to avoid the hassle of re-writing the logic throughout the application again and again.
 100. What is V8 Templates ?
 
-
-    - A template is a blueprint for Javascript funtions and objects. You can use a template to wrap C++ functions and data structures within Javascript objects. V8 has two types of templates:
-      1. Function Template is the blueprint for a single function. You create a Javascript instance of template by calling the template's GetFunction method from within the context in which you wish to iunstantiate the Javascript function. You can aslo associate a C++ callback with a function template which is called when the Javascript function instance is invoked.
-      2. Object Template is used to configure objects created with function template as their constructor. You can associate two types of C++ callbacks with object templates: accessor callback and interceptor callback. Accessor callback is invoked when a specific object property is accessed by script. Interceptor callback is invoked when any object property is accessed by script. In a nutshell, you can wrap C++ objects\structures within Javascript objects.
+     - A template is a blueprint for Javascript funtions and objects. You can use a template to wrap C++ functions and data structures within Javascript objects. V8 has two types of templates:
+     - Function Template is the blueprint for a single function. You create a Javascript instance of template by calling the template's GetFunction method from within the context in which you wish to iunstantiate the Javascript function. You can aslo associate a C++ callback with a function template which is called when the Javascript function instance is invoked.
+     - Object Template is used to configure objects created with function template as their constructor. You can associate two types of C++ callbacks with object templates: accessor callback and interceptor callback. Accessor callback is invoked when a specific object property is accessed by script. Interceptor callback is invoked when any object property is accessed by script. In a nutshell, you can wrap C++ objects\structures within Javascript objects.
 
 101. How V8 compiles Javascript code ?
 
+     - Parsing Phase: During the parsing phase, the code is broken down into its respective tokens.
+     - Compilation phase: Compilation is the process of converting human-readable code to machine code. There are two ways to compile the code :
 
-    - Parsing Phase: During the parsing phase, the code is broken down into its respective tokens.
-    - Compilation phase: Compilation is the process of converting human-readable code to machine code. There are two ways to compile the code :
-      1. Using an Interpreter: The interpreter scans the code line by line and converts it into byte code. Example: Python
-      2. Using a Compiler: The Compiler scans the entire document and compiles it into highly optimized byte code. Example: Java
-      3. Unlike other languages, The V8 engine uses both a compiler and an interpreter and follows Just in Time(JIT) Compilation for improved performance.
-    -  Execution Phase: The byte code is executed by using the Memory heap and the Call Stack of the V8 engine’s runtime environment. Memory Heap is the place where all the variables and functions are assigned memory. Call Stack is the place where each individual functions, when called are pushed to the stack, and popped out after their execution. When the interpreter interprets the code, using an object structure, where the keys are the byte code and the values the functions which handle the corresponding byte code. The V8 engine orders the values in the form of a list in memory, which is saved into a Map thereby saving a lot of memory.
+       1. Using an Interpreter: The interpreter scans the code line by line and converts it into byte code. Example: Python
+       2. Using a Compiler: The Compiler scans the entire document and compiles it into highly optimized byte code. Example: Java
+       3. Unlike other languages, The V8 engine uses both a compiler and an interpreter and follows Just in Time(JIT) Compilation for improved performance.
+
+     - Execution Phase: The byte code is executed by using the Memory heap and the Call Stack of the V8 engine’s runtime environment. Memory Heap is the place where all the variables and functions are assigned memory. Call Stack is the place where each individual functions, when called are pushed to the stack, and popped out after their execution. When the interpreter interprets the code, using an object structure, where the keys are the byte code and the values the functions which handle the corresponding byte code. The V8 engine orders the values in the form of a list in memory, which is saved into a Map thereby saving a lot of memory.
 
 102. How many threads does Node actually create ?
 
+     - Using Single thread and Concept of Event Loop: To overcome this problem, Node adopted a single thread system with event loop and asynchronous I/O operations. Using a single thread allows Node to execute one process at a time while the processes that take longer time than usual are handled by Node API and event loop. Event loop uses callbacks to return outputs from functions that were being handled by Node API and the tasks continue to execute normally till the whole code is processed.
 
-    - Using Single thread and Concept of Event Loop: To overcome this problem, Node adopted a single thread system with event loop and asynchronous I/O operations. Using a single thread allows Node to execute one process at a time while the processes that take longer time than usual are handled by Node API and event loop. Event loop uses callbacks to return outputs from functions that were being handled by Node API and the tasks continue to execute normally till the whole code is processed.
+103. Does JavaScript pass by references or pass by values
 
-103. Does JavaScript pass by references or pass by values ?
+- JavaScript is always pass-by-value. This means everything in JavaScript is a value type and function arguments are always passed by value. That being said, object types are a bit more confusing.
+- The confusion lies in the fact that object types are reference types which are passed by value. As weird as this sounds, a reference to an object is passed to a function by value. The subtle difference here lies in the fact that an object reference passed by value is not the same as passing an object by reference.
 
+104.  What's the difference between `pm2` and `pm2-runtime` and when to use one ?
 
-    - JavaScript is always pass-by-value. This means everything in JavaScript is a value type and function arguments are always passed by value. That being said, object types are a bit more confusing.
-    - The confusion lies in the fact that object types are reference types which are passed by value. As weird as this sounds, a reference to an object is passed to a function by value. The subtle difference here lies in the fact that an object reference passed by value is not the same as passing an object by reference.
+      - The main difference between pm2 and pm2-runtime is
+        1. pm2-runtime designed for Docker container which keeps an application in the foreground which keep the container running,
+        2. pm2 is designed for normal usage where you send or run the application in the background.
 
-104. What's the difference between `pm2` and `pm2-runtime` and when to use one ?
+105.  Does the `cluster` in Node.js utilizes same event loop ?
 
+      - When you use clustering in Node then you're running several Node processes.
+      - Every Node process has its own event loop. All processes in the cluster can share the server ports but they don't actually share any state, and they don't share the event loops - every process has its own one.
 
-    - The main difference between pm2 and pm2-runtime is
-      1. pm2-runtime designed for Docker container which keeps an application in the foreground which keep the container running,
-      2. pm2 is designed for normal usage where you send or run the application in the background.
+106.  What is the difference between `cluster.fork()` vs `child_process.fork()` in Node.js ?
 
-105. Does the `cluster` in Node.js utilizes same event loop ?
+      - The difference between `cluster.fork()` and `child_process.fork()` is simply that cluster allows TCP servers to be shared between workers. `cluster.fork` is implemented on top of `child_process.fork`.
 
+107.  How would you implement process communication when using `cluster` module in Node.js ?
 
-    - When you use clustering in Node then you're running several Node processes.
-    - Every Node process has its own event loop. All processes in the cluster can share the server ports but they don't actually share any state, and they don't share the event loops - every process has its own one.
-
-106. What is the difference between `cluster.fork()` vs `child_process.fork()` in Node.js ?
-
-
-    - The difference between `cluster.fork()` and `child_process.fork()` is simply that cluster allows TCP servers to be shared between workers. `cluster.fork` is implemented on top of `child_process.fork`.
-
-107. How would you implement process communication when using `cluster` module in Node.js ?
-
-
-    -  Cluster module lets you fork multiple child processes (using child_process.fork()). Making use of the events ‘online’, ‘disconnect’, ‘listening’, ‘message’, ‘error’ and ‘exit’ emitted by worker process, the state of worker process can be easily managed;
+- Cluster module lets you fork multiple child processes (using child_process.fork()). Making use of the events ‘online’, ‘disconnect’, ‘listening’, ‘message’, ‘error’ and ‘exit’ emitted by worker process, the state of worker process can be easily managed;
