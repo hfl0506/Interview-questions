@@ -1104,243 +1104,230 @@
 
 100. Does React re-render all components and sub components every time setState is called ?
 
-
-    - Yes.There is a method boolean shouldComponentUpdate(object nextProps, object nextState), each component has this method and it's responsible to determine "should component update (run render function)?" every time you change state or pass new props from parent component.
-    - You can write your own implementation of shouldComponentUpdate method for your component, but default implementation always returns true - meaning always re-run render function.
+- Yes.There is a method boolean shouldComponentUpdate(object nextProps, object nextState), each component has this method and it's responsible to determine "should component update (run render function)?" every time you change state or pass new props from parent component.
+- You can write your own implementation of shouldComponentUpdate method for your component, but default implementation always returns true - meaning always re-run render function.
 
 101. Describe how events are handled in React.
 
+- example:
+  ```jsx
+  //html
+  <button onclick="activateLasers()">
+  Activate Lasers
+  </button>
+  // react
+  <button onClick={activateLasers}>
+  Activate Lasers
+  </button>
+  ```
 
-    - example:
-    ```jsx
-    //html
-    <button onclick="activateLasers()">
-    Activate Lasers
-    </button>
-    // react
-    <button onClick={activateLasers}>
-    Activate Lasers
-    </button>
-    ```
+102.  How to apply validation on `props` in ReactJS ?
 
-102. How to apply validation on `props` in ReactJS ?
+- Need of Validating Props in React JS: Props are used to passing the read-only attributes to React components. For the proper functioning of components and to avoid future bugs and glitches it is necessary that props are passed correctly. Hence, it is required to use props validation for improving react component’s performance
+- React JS has an inbuilt feature for validating props data type to make sure that values passed through props are valid. React components have a property called propTypes which is used to setup data type validation.
 
+103.  When would you see use `StrictMode` component in React ?
 
-    - Need of Validating Props in React JS: Props are used to passing the read-only attributes to React components. For the proper functioning of components and to avoid future bugs and glitches it is necessary that props are passed correctly. Hence, it is required to use props validation for improving react component’s performance.
-    - React JS has an inbuilt feature for validating props data type to make sure that values passed through props are valid. React components have a property called propTypes which is used to setup data type validation.
+- React `StrictMode` highlights potential problems in the application. By doing so, it helps you write more readable and safe applications. This feature is included in the React package, so you don’t have to import it separately. If you have any suspicious code, wrap it within the `StrictMode` helper component, and that’s it. Here’s how to use it in functional React components:
 
-103. When would you see use `StrictMode` component in React ?
-
-
-    - React `StrictMode` highlights potential problems in the application. By doing so, it helps you write more readable and safe applications. This feature is included in the React package, so you don’t have to import it separately. If you have any suspicious code, wrap it within the `StrictMode` helper component, and that’s it. Here’s how to use it in functional React components:
-    ```jsx
-    import React, { Component } from 'react';
-    function SuspiciousComponent() {
+  ```jsx
+  import React, { Component } from "react";
+  function SuspiciousComponent() {
+    return <div>Let's say this is suspicious</div>;
+  }
+  function App() {
     return (
-        <div>Let's say this is suspicious</div>
-    )
+      <div>
+        <React.StrictMode>
+          <SuspiciousComponent></SuspiciousComponent>
+        </React.StrictMode>
+      </div>
+    );
+  }
+  ```
+
+104.  What's the difference between `useCallback` and `useMemo` in practice ?
+
+- Despite seeming very similar, there are different use cases for each. You should wrap functions with `useCallback` when passing a function as a dependency to other hooks or wrapping a functional component in `React.Memo()` that accepts your method as a property. You can use `useMemo` when you are working on functions where the inputs gradually change, where data values aren’t large enough to cause memory issues, or if the parameters are large enough so that the cost of comparison doesn’t outweigh the use of the wrapper
+- `useCallback` works well in instances where the code would otherwise be recompiled with every call. Memorizing the results can decrease the cost of calling functions over and over again when the inputs change gradually over time.
+
+105.  Explain why and when would you use `useMemo` ?
+
+- `useMemo` is a React hook that memorizes the output of a function. That is it. `useMemo` accepts two arguments: a function and a list of dependencies. `useMemo` will call the function and return its return value. Then, every time you call `useMemo` again, it will first check if any dependencies have changed. If not, it will return the cached return value, not calling the function. If they have changed, `useMemo` will call the provided function again and repeat the process.
+- Firstly, it is important to note that your code must not depend on `useMemo`. In other words, you should be able to replace `useMemo` calls with direct function calls and not change anything in the application behavior, except the performance. The easiest way to do it is to write code without `useMemo` first, then add as needed.
+
+106.  When to use `useCallback`, `useMemo` and `useEffect` ?
+
+- `useCallback`: Typically useCallback is helpful when passing callback props to highly optimised child components.
+
+  1. For example, if a child component that accepts a callback relies on a referential equality check (eg: React.memo() or shouldComponentUpdate) to prevent unnecessary re-renders when its props change, then it is important that any callback props do not change between renders.
+
+  - `useMemo`:
+    1. When a component uses a value computed using a time-consuming function.
+    2. Now consider another scenario when we have a component that does something when some data changes, for example, a let’s take the hook useEffect which logs if some dependency changes.
+  - `useEffect`:
+    1. hook is to execute code that needs happens during lifecycle of the component instead of on specific user interactions or DOM events.
+    2. For instance, you wish to set a timer that executes a code when the component is rendered initially or as done in your initial example, the document title is updated when the component mounts, there is no user interaction associated here
+
+107.  Can you do Components Inheritance in React ?
+
+- If you want to use the parent's method inside children, you need to extend parent and call super in the constructor. super will run the constructor of the parent component. So, when you define or reference your method in the parent's constructor it can be accessible.
+
+  ```jsx
+  class A extends React.Component {
+    constructor(props) {
+      super(props);
+      this.parentMethod = this.parentMethod.bind(this); //referencing the method in constructor
     }
-    function App() {
-    return (
-        <div>
-            <React.StrictMode>
-            <SuspiciousComponent></SuspiciousComponent>
-            </React.StrictMode>
-        </div>
-    )
+    parentMethod() {
+      console.log("Parent Method");
     }
-    ```
+    render() {
+      return false;
+    }
+  }
+  class B extends A {
+    constructor() {
+      super(); //call super to run parent's constructor
+    }
+    render() {
+      this.parentMethod(); //calling parent method
+      return false;
+    }
+  }
+  ReactDOM.render(
+    <div>
+      <A />
+      <B />
+    </div>,
+    document.getElementById("app")
+  );
+  ```
 
-104. What's the difference between `useCallback` and `useMemo` in practice ?
+108.  What is difference between `Incremental DOM` and `Virtual DOM` ?
 
+- `Virtual DOM` compares (diff) a new entire virtual DOM with the previous virtual DOM for changes then applies those changes to the actual DOM. - This approach creates a new virtual DOM to determine the changes (memory heavy).
+- `Incremental DOM` has one virtual DOM and walks along the tree to find changes then mutates the virtual DOM and then apply those changes to the actual DOM - (reduced memory size and garbage collection).
+- `Virtual DOM` - has a big memory footprint because it needs headroom for changes that "might" happen to the `virtual DOM`
+- `Incremental DOM` - doesn’t need such a big footprint as memory is only allocated for changes.
 
-    - Despite seeming very similar, there are different use cases for each. You should wrap functions with `useCallback` when passing a function as a dependency to other hooks or wrapping a functional component in `React.Memo()` that accepts your method as a property. You can use `useMemo` when you are working on functions where the inputs gradually change, where data values aren’t large enough to cause memory issues, or if the parameters are large enough so that the cost of comparison doesn’t outweigh the use of the wrapper.
-    - `useCallback` works well in instances where the code would otherwise be recompiled with every call. Memorizing the results can decrease the cost of calling functions over and over again when the inputs change gradually over time.
+109.  When would you use `flushSync` in ReactJS ?
 
-105. Explain why and when would you use `useMemo` ?
+- `flushSync` flushes the entire tree and actually forces complete re-rendering for updates that happen inside of a call, so you should use it very sparingly. This way it doesn’t break the guarantee of internal consistency between props, state, and refs.
 
+110.  When shall we use `useReducer` hook in ReactJS ?
 
-    - `useMemo` is a React hook that memorizes the output of a function. That is it. `useMemo` accepts two arguments: a function and a list of dependencies. `useMemo` will call the function and return its return value. Then, every time you call `useMemo` again, it will first check if any dependencies have changed. If not, it will return the cached return value, not calling the function. If they have changed, `useMemo` will call the provided function again and repeat the process.
-    - Firstly, it is important to note that your code must not depend on `useMemo`. In other words, you should be able to replace `useMemo` calls with direct function calls and not change anything in the application behavior, except the performance. The easiest way to do it is to write code without `useMemo` first, then add as needed.
-
-106. When to use `useCallback`, `useMemo` and `useEffect` ?
-
-
-    - `useCallback`: Typically useCallback is helpful when passing callback props to highly optimised child components.
-        1. For example, if a child component that accepts a callback relies on a referential equality check (eg: React.memo() or shouldComponentUpdate) to prevent unnecessary re-renders when its props change, then it is important that any callback props do not change between renders.
-    - `useMemo`:
-        1. When a component uses a value computed using a time-consuming function.
-        2. Now consider another scenario when we have a component that does something when some data changes, for example, a let’s take the hook useEffect which logs if some dependency changes.
-    - `useEffect`:
-        1. hook is to execute code that needs happens during lifecycle of the component instead of on specific user interactions or DOM events.
-        2. For instance, you wish to set a timer that executes a code when the component is rendered initially or as done in your initial example, the document title is updated when the component mounts, there is no user interaction associated here
-
-107. Can you do Components Inheritance in React ?
-
-
-    - If you want to use the parent's method inside children, you need to extend parent and call super in the constructor. super will run the constructor of the parent component. So, when you define or reference your method in the parent's constructor it can be accessible.
-    ```jsx
-    class A extends React.Component{
-        constructor(props) {
-            super(props)
-            this.parentMethod = this.parentMethod.bind(this) //referencing the method in constructor
-        }
-        parentMethod(){
-            console.log('Parent Method')
-        }
-        render(){
-            return false
-        }
-        }
-        class B extends A{
-        constructor(){
-            super() //call super to run parent's constructor
-        }
-        render(){
-            this.parentMethod() //calling parent method
-            return false
-        }
-        }
-        ReactDOM.render(
-        <div>
-            <A/>
-            <B/>
-        </div>,
-        document.getElementById('app')
-        )
-    ```
-
-108. What is difference between `Incremental DOM` and `Virtual DOM` ?
-
-
-    - `Virtual DOM` compares (diff) a new entire virtual DOM with the previous virtual DOM for changes then applies those changes to the actual DOM. - This approach creates a new virtual DOM to determine the changes (memory heavy).
-    - `Incremental DOM` has one virtual DOM and walks along the tree to find changes then mutates the virtual DOM and then apply those changes to the actual DOM - (reduced memory size and garbage collection).
-    - `Virtual DOM` - has a big memory footprint because it needs headroom for changes that "might" happen to the `virtual DOM`.
-    - `Incremental DOM` - doesn’t need such a big footprint as memory is only allocated for changes.
-
-109. When would you use `flushSync` in ReactJS ?
-
-
-    - `flushSync` flushes the entire tree and actually forces complete re-rendering for updates that happen inside of a call, so you should use it very sparingly. This way it doesn’t break the guarantee of internal consistency between props, state, and refs.
-
-110. When shall we use `useReducer` hook in ReactJS ?
-
-
-    - The state value is an object or an array.
-    - When the logic to update state is super complex
-    - You need for a more predictable, and maintainable state architecture
+- The state value is an object or an array.
+- When the logic to update state is super complex
+- You need for a more predictable, and maintainable state architecture
 
 111. When to use `useState` vs `useReducer` ?
 
+- The state value is string, number, boolean just use `useState`, and use `useReducer` in object, array state.
+- The logic of update state is simple use `useState`, if not then use `useReducer`.
+- Use `useReducer` if need a more predictable, and maintainable state architecture. If not just use `useState`.
 
-    - The state value is string, number, boolean just use `useState`, and use `useReducer` in object, array state.
-    - The logic of update state is simple use `useState`, if not then use `useReducer`.
-    - Use `useReducer` if need a more predictable, and maintainable state architecture. If not just use `useState`.
+112.  How would you store non-state/instance variable in functional React components ?
 
-112. How would you store non-state/instance variable in functional React components ?
+- The useRef hook is not just for DOM refs, but can store any mutable value you like.
 
-
-    - The useRef hook is not just for DOM refs, but can store any mutable value you like.
-    ```jsx
-    function FunctionalBar(props) {
+  ```jsx
+  function FunctionalBar(props) {
     const [foo] = useState(new Animated.Value(0));
     const _foo = useRef(0);
 
     function showFoo() {
-        let anim = Animated.timing(foo, { toValue: 1, duration: 1000, useNativeDriver: true });
-        anim.start(() => console.log(_foo.current));
+      let anim = Animated.timing(foo, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      });
+      anim.start(() => console.log(_foo.current));
     }
 
     useEffect(() => {
-        function _onChangeFoo({ value }) {
+      function _onChangeFoo({ value }) {
         _foo.current = value;
-        }
+      }
 
-        foo.addListener(_onChangeFoo);
-        showFoo();
-        return () => foo.removeListener(_onChangeFoo);
+      foo.addListener(_onChangeFoo);
+      showFoo();
+      return () => foo.removeListener(_onChangeFoo);
     }, []);
 
     return <View />;
-    }
-    ```
+  }
+  ```
 
-113. What is a Pure Function ?
+113.  What is a Pure Function ?
 
+- Pure functions take an input value (a parameter or argument) and depending on that input, produce an output value, that's all. They do one thing only, but they do it well.
 
-    - Pure functions take an input value (a parameter or argument) and depending on that input, produce an output value, that's all. They do one thing only, but they do it well.
-    - It should be that whenever you give a pure function the same input it will return the same output every single time.
-    ```jsx
-    const myPureFunction = number => return number * 4
-    ```
+- It should be that whenever you give a pure function the same input it will return the same output every single time.
+
+  ```jsx
+  const myPureFunction = number => return number * 4
+  ```
 
 114. Explain some difference between Flux and AngularJS(1.x) approach ?
 
-
-    - UI components in AngularJS typically rely on some internal `$scope` to store their data. This data can be directly mutated from within the UI component or anything given access to `$scope` - a risky situation for any part of the component or greater application which relies on that data.
-    - By contrast, the Flux pattern encourages the use of immutable data. Because the store is the central authority on all data, any mutations to that data must occur within the store. The risk of adata pollution is greatly reduced.
+- UI components in AngularJS typically rely on some internal `$scope` to store their data. This data can be directly mutated from within the UI component or anything given access to `$scope` - a risky situation for any part of the component or greater application which relies on that data.
+- By contrast, the Flux pattern encourages the use of immutable data. Because the store is the central authority on all data, any mutations to that data must occur within the store. The risk of adata pollution is greatly reduced.
 
 115. What is the key architectural difference between a JavaScript library such as React and a Javascript framework such as Angular ?
 
-
-    - Used as: ReactJS is JavaScript library updates the virtual DOM and Angular is a JavaScript framework updates the real DOM.
-    - Architecture: ReactJS is more simplified as MVC and Flux, and AngularJS is follow by MVVM.
-    - Preference: React.js is preferred when the dynamic content needed is intensive. Angular is platform-independent and hence is compatible to work in any platform.
-    - Dependency Injection: React.js Does not use the Dependency Injection concept, Angular Hierarchical Dependency Injection system used.
+- Used as: ReactJS is JavaScript library updates the virtual DOM and Angular is a JavaScript framework updates the real DOM.
+- Architecture: ReactJS is more simplified as MVC and Flux, and AngularJS is follow by MVVM.
+- Preference: React.js is preferred when the dynamic content needed is intensive. Angular is platform-independent and hence is compatible to work in any platform.
+- Dependency Injection: React.js Does not use the Dependency Injection concept, Angular Hierarchical Dependency Injection system used.
 
 116. What is React Fiber ?
 
-
-    - React Fiber is a backwards compatible, complete rewrite of the React core. In other words, it is a reimplementation of older versions of the React reconciler.
-    - React Fiber is aimed at improving the perceived performance for complex React applications. It does so by allowing React to break the limits of the call stack. This lets it pause or start rendering work whenever required.
-    - React Fiber also increases the suitability of the React library to create animations, layouts, and gestures.
-    - Through its feature of incremental rendering, React Fiber lets developers split rendering work into smaller chunks and distribute it over multiple frames. This allows users to essentially control the "priority" of work.
+- React Fiber is a backwards compatible, complete rewrite of the React core. In other words, it is a reimplementation of older versions of the React reconciler.
+- React Fiber is aimed at improving the perceived performance for complex React applications. It does so by allowing React to break the limits of the call stack. This lets it pause or start rendering work whenever required.
+- React Fiber also increases the suitability of the React library to create animations, layouts, and gestures.
+- Through its feature of incremental rendering, React Fiber lets developers split rendering work into smaller chunks and distribute it over multiple frames. This allows users to essentially control the "priority" of work.
 
 117. How to avoid the need for binding in React ?
 
-
-    - To avoid the need for binding we have something introduced in ES6 as arrow functions. Using the arrow function to call this.setState will lead to avoid the use of bind. When we use the arrow function it works because of the of following reasons:
-        1. It does not re-scope this, so we don’t need to bind this in the class constructor.
-        2. JavaScript has first-class functions, which means functions are considered as data. Therefore, arrow functions can be assigned to class properties.
+- To avoid the need for binding we have something introduced in ES6 as arrow functions. Using the arrow function to call this.setState will lead to avoid the use of bind. When we use the arrow function it works because of the of following reasons:
+  1. It does not re-scope this, so we don’t need to bind this in the class constructor.
+  2. JavaScript has first-class functions, which means functions are considered as data. Therefore, arrow functions can be assigned to class properties.
 
 118. How does React renderer work exactly when we call `setState` ?
 
-
-    - Virtual DOM renders: when render method is called it returns a new virtual dom structure of the component. As I mentioned before, this render method is called always when you call setState(), because shouldComponentUpdate always returns true by default. So, by default, there is no optimization here in React.
-    - Native DOM renders: React changes real DOM nodes in your browser only if they were changed in the Virtual DOM and as little as needed - this is that great React's feature which optimizes real DOM mutation and makes React fast.
+- Virtual DOM renders: when render method is called it returns a new virtual dom structure of the component. As I mentioned before, this render method is called always when you call setState(), because shouldComponentUpdate always returns true by default. So, by default, there is no optimization here in React.
+- Native DOM renders: React changes real DOM nodes in your browser only if they were changed in the Virtual DOM and as little as needed - this is that great React's feature which optimizes real DOM mutation and makes React fast.
 
 119. How to use `React.memo()` ?
 
-
-    - When deciding to update DOM, React first renders your component, then compares the result with the previous render. If the render results are different, React updates the DOM.
-    - Current vs previous render results comparison is fast. But you can speed up the process under some circumstances.
-    - When a component is wrapped in React.memo(), React renders the component and memoizes the result. Before the next render, if the new props are the same, React reuses the memoized result skipping the next rendering.
-    ```jsx
-    export function Movie({ title, releaseDate }) {
+- When deciding to update DOM, React first renders your component, then compares the result with the previous render. If the render results are different, React updates the DOM.
+- Current vs previous render results comparison is fast. But you can speed up the process under some circumstances.
+- When a component is wrapped in React.memo(), React renders the component and memoizes the result. Before the next render, if the new props are the same, React reuses the memoized result skipping the next rendering.
+  ```jsx
+  export function Movie({ title, releaseDate }) {
     return (
-        <div>
+      <div>
         <div>Movie title: {title}</div>
         <div>Release date: {releaseDate}</div>
-        </div>
+      </div>
     );
-    }
-    export const MemoizedMovie = React.memo(Movie);
-    ```
+  }
+  export const MemoizedMovie = React.memo(Movie);
+  ```
 
 120. Can a custom React hook return JSX ?
 
-
-    - When you write a hook that returns JSX component, you are essentially defining the component within the functional component, so on each and every re-render you will be creating a new instance of the component. This will lead to the component being unmounted and mounted again. Which is bad for performance and also buggy if you have stateful login within the component as the state will get reset with every re-render of parent
-    - By defining a JSX component within the hook, you are taking away the option of lazy loading your component if the need be.
-    - Any performance optimization to the component will require you to make use of useMemo which doesn't give you the flexibility of a custom comparator function like `React.memo`
+- When you write a hook that returns JSX component, you are essentially defining the component within the functional component, so on each and every re-render you will be creating a new instance of the component. This will lead to the component being unmounted and mounted again. Which is bad for performance and also buggy if you have stateful login within the component as the state will get reset with every re-render of parent
+- By defining a JSX component within the hook, you are taking away the option of lazy loading your component if the need be.
+- Any performance optimization to the component will require you to make use of useMemo which doesn't give you the flexibility of a custom comparator function like `React.memo`
 
 121. What is the order of `useInsertionEffect`, `useEffect` and `useLayoutEffect` hooks at component generation ?
 
-
-    - `useInsertionEffect`: It fires synchronously before all DOM mutations. Use this to inject styles into the DOM before reading layout in `useLayoutEffect`. So it runs before `useLayoutEffect`.
-    - `useLayoutEffect`:It fires synchronously after all DOM mutations. Use this to read layout from the DOM and synchronously re-render.
-    - `useEffect`: It will run after the render is committed to the screen. So it runs after `useLayoutEffect`.
-    - The order:
-        1. useInsertionEffect
-        2. useLayoutEffect
-        3. useEffect
+- `useInsertionEffect`: It fires synchronously before all DOM mutations. Use this to inject styles into the DOM before reading layout in `useLayoutEffect`. So it runs before `useLayoutEffect`.
+- `useLayoutEffect`:It fires synchronously after all DOM mutations. Use this to read layout from the DOM and synchronously re-render.
+- `useEffect`: It will run after the render is committed to the screen. So it runs after `useLayoutEffect`.
+- The order:
+  1. useInsertionEffect
+  2. useLayoutEffect
+  3. useEffect

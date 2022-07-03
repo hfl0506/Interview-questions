@@ -6,7 +6,7 @@ This repository only for educational usage, and the questions is come from
 - Read more [HTML](./questions/html.md) questions
 - Read more [Redux](./questions/redux.md) questions
 - Read more [Reactjs](./questions/reactjs.md) questions
-- Read more [Nodejs](./questions/nodejs.md) questions - working
+- Read more [Nodejs](./questions/nodejs.md) questions
 - Read more [MongoDB] questions - will work
 - Read more [Javascript] questions - will work
 - Read more [Typescript] questions - will work
