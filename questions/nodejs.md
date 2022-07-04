@@ -620,7 +620,7 @@
     ```
 
 56. What are `express.json()` and `express.urlencoded()` in Express.js ?
-    - They are middleware function which is a piece of code that is called betweeen when a server gets a request from a client and when it sends a response bakc to the client.
+    - They are middleware function which is a piece of code that is called betweeen when a server gets a request from a client and when it sends a response back to the client.
     - They parse outgoing requests that both are used to parse data on `req` object. They only need when the request method is `POST` or `PUT`. Both used to part of `body-parser` in the express js.
     - `express.json()` and `express.urlencoded()` are helpful express middleware parser functions that let you parse outgoing request data depending on the encoding of data you're sending to the server.
 57. How to gracefully shutdown Node.js server ?
