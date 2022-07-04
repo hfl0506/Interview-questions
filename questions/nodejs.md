@@ -681,7 +681,7 @@
     - LTS release status is "long-term support", which typically guarantees that critical bugs will be fixed for a total of 30 months. Production applications should only use Active LTS or Maintenance LTS releases.
 63. Is Node.js entirely based on a single-thread ?
     - Node JS Platform doesn’t follow the Multi-Threaded Request/Response Stateless Model. It follows the Single-Threaded with Event Loop Model. Node JS Processing model mainly inspired by JavaScript Event-based model with JavaScript callback mechanism. Because of which Node.js can handle more concurrent client requests with ease. The event loop is the heart of the Node.js processing model as shown below diagram.
-    - ![image info](./../images/nodejs-63.png)
+    - ![image info](./../images/nodejs-63.gif)
 64. When not to use Node.js ?
     - Applications with heavy computing server-side. Since Node.js uses only one CPU core, heavy computations on the server will block all other requests. In this case, the event-driven non-blocking I/O model which is the strongest side of Node.js will become useless, and the application performance will suffer.
     - CRUD applications. In this case, using Node.js does not automatically mean poor performance. However, if you are building a simple CRUD app with data coming directly from the server and no API is needed, Node.js may be excessive, as its powerful features will be simply wasted.
