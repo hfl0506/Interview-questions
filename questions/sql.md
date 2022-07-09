@@ -191,4 +191,167 @@ TRUNCATE TABLE  TableName;The identity
 
 20. How a database index can help performance ?
 
-- An index is used to speed up data search and SQL query performance. The database indexes reduce the number of data pages that have to be read in order to find the specific record. The biggest challenge with indexing is to determine the right ones for each table.
+- the index causes the database to create a data structure. The data structure type is very likely a B-Tree. While the advantages of the B-Tree are numerous, the main advantage for our purposes is that it is sortable. When the data structure is sorted in order it makes our search more efficient for the obvious reasons we pointed out above.
+
+When the index creates a data structure on a specific column it is important to note that no other column is stored in the data structure.
+
+21. What's the difference between a Primary Key and a Unique Key ?
+
+- primary key:
+  1. used to ensure data in the specific column is unique.
+  2. uniquely identifies a record in relational database table.
+  3. only one primary key is allowed in a table.
+  4. combination of unique and not null constraints.
+  5. it cannot be deleted from the parent table.
+  6. it constraint can be implicitly defined on the temporary tables.
+- foreign key:
+  1. can be a column or group of columns in a relational database table that provides a link between data in two tables.
+  2. refers to the field in a table which is the primary key of another table.
+  3. more than one foreign key are allowed in a table.
+  4. can contain duplicate values and a table in a relational database.
+  5. can contain NULL values.
+  6. the value can be deleted from the child table.
+  7. constraint cannot be defined on the local or global temporary tables.
+
+22. What is Collation ?
+
+- Collation specifies how data is sorted and compared in a database. Collation provides the sorting rules, case, and accent sensitivity properties for the data in the database.
+- when you run a query using the ORDER BY clause, collation determines whether or not uppercase letters and lowercase letters are treated the same.
+- Collation is also used to determine how accents are treated, as well as character width and Japanese kana characters. Collation can also be used to distinguish between various ideographic variation selectors in certain collations (such as the Japanese_Bushu_Kakusu_140 and Japanese_XJIS_140 collations that were introduced in SQL Server 2017).
+- Different database management systems will provide different collation options. Depending on the DBMS, collation can be specified at the server level, the database level, the table level, and the column level. Collations can also be specified at the expression level (so you can specify which collation to use when you run a query), and at the identifier level.
+
+23. How can `VIEW` be used to provide security layer for your app ?
+
+- Use a view to limit the data that a user is allowed to see in a table. For example, if you have an employees table and wish to provide some users with access to the records of full-time employees, you can create a view that contains only those records. This is much easier than the alternative (creating and maintaining a shadow table) and ensures the integrity of the data.
+
+24. What's the difference between Azure SQL database and Azure SQL Managed Instance ?
+
+- Recovery model: Azure SQL Database is from automated backups only; SQL MI is from automated backups and from full backups placed on Azure Blob Storage.
+- Active Geo-replication: Azure SQL Database support in all service tiers other than Hyperscale; SQL ML is not supported for that, but it has alternative solution from Auto-failover groups.
+- Auto-failover groups: Azure SQL Database support in serverless model; SQL MI is not supported and have to reserve compute and storage.
+- Automatic tuning \*indexes: Azure SQL database supported; SQL MI not supported.
+- Elastic jobs: Azure SQL database supported; SQL MI not supported and could be use SQL Agent instead.
+- Long-term backup retention(LTR): Azure SQL database supported and could be keep automatically backups up to 10 years; SQL MI not supported for that and it needs to backup manually.
+- Hyperscale architecture: Azure SQL database is supported; SQL MI is not supported.
+- SQL server profiler: Azure SQL database not supported; SQL MI is supported.
+- Cross-database transactions: Azure SQL database not supported; SQL MI is supported;
+- Database mail(DbMail): Azure SQL database not supported for that; SQL MI is supported.
+- Linked servers: Azure SQL database not supported; SQL MI is supported.
+- Service Broker: Azure SQL database not supported; SQL MI is supported;
+- SQL Server Agent: Azure SQL database not supported; SQL MI is supported;
+- SQL Server Auditing: Azure SQL database not supported; SQL MI is supported;
+
+25. What is the cost of having a database index ?
+
+- It will take up space, the larger your table, the larger your index.
+- Another performance hit with indexes is the fact that whenever you add, delete, or update rows in the corresponding table, the same operations will have to be done to your index. Remember that an index needs to contain the same up to the minute data as whatever is in the table coulumns(s) that the index covers.
+- An index should only be created on a table if the data in the indexed column will be queried frequently.
+
+26. How does B-trees Index work ?
+
+- B-tree is a data structure that provides sorted data and allows searches, sequential access, attachments, and removals in sorted order. The B-tree is highly capable of storage systems that write large blocks of data. The B-tree simplifies the binary search tree by allowing nodes with more than two children. We can represent the sample B-tree as follows.
+- ![image info](./../images/sql-26-1.jpeg)
+- B-tree stores data such that each node contains keys in ascending order. Each of these keys has two references to another two child nodes. Te left side child node keys are less than the current keys and the right side child node keys are more than the current keys. If a single node has “n” number of keys, then it can have maximum “n+1” child nodes.
+
+27. Explain the difference between Exclusive Lock and Update Lock.
+
+- When Exclusive Lock is on any processes no other lock can be placed on that row or table. Every other process have to wait till Exclusive Lock is complete its tasks.
+- Update Lock is kind of Exclusive Lock except it can be placed on the row which already have Shared Lock on it. Update Lock reads the data of row which has Shared Lock, as soon as Update Lock is ready to change the data it converts itself to Exclusive Lock.
+
+28. What is the difference among `UNION`, `MINUS` and `INTERSECT` ?
+
+- `UNION`: The most commonly used command, `UNION` combines the two answer sets into a single answer set. It automatically removes duplicate rows from the results.
+- `INTERSECT`: It gives you the rows that are found in both queries by eliminating rows that are only found in one or the other query.
+- `MINUS`: It gives you the rows that are found in the first query and not in the second query by removing from the results all the rows that are found only in the second query.
+
+29. What is fater, one big query or many small queries ?
+
+- when your query is based on one condition, it is better to use one bigger query
+
+```sql
+SELECT product_id, product_name FROM products WHERE product_category IN (1,2,3);
+```
+
+rather than
+
+```sql
+SELECT product_id, product_name FROM products WHERE product_category = 1;
+SELECT product_id, product_name FROM products WHERE product_category = 2;
+SELECT product_id, product_name FROM products WHERE product_category = 3;
+```
+
+- using one query, which is reading the data from more tables with functions LEFT JOIN, RIGHT JOIN or INNER JOIN, instead of using multiple separated / nested queries, where each query is reading the data from only one table:
+
+```sql
+SELECT product_id, product_name FROM products AS p LEFT JOIN categories AS c ON p.product_category = c.category_id WHERE c.category_promotion = 1;
+```
+
+to benefit this case should have break down to multiple case
+
+```sql
+SELECT product_id, product_name FROM products WHERE product_price < 100;
+SELECT * FROM products WHERE product_price < 100;
+```
+
+- In case of more complex operations, to speed up the processing, it can be good solution to create and use temporary tables with relevant data. Also the nested queries can be faster, than multiple separated queries:
+
+```sql
+INSERT INTO temporary_products (product_id, product_name, product_description, product_price, product_category, product_quantity, product_status) SELECT product_id, product_name, product_description, product_price, product_category, product_quantity, product_status FROM products WHERE product_category = 3;
+```
+
+30. What is Optimistic Locking and Pessimistic Locking ?
+
+- Optimistic Locking:
+  1. is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) and check that the version hasn't changed before you write the record back. When you write the record back you filter the update on the version to make sure it's atomic. (i.e. hasn't been updated between when you check the version and write the record to the disk) and update the version in one hit.
+  2. If the record is dirty (i.e. different version to yours) you abort the transaction and the user can re-start it.
+  3. This strategy is most applicable to high-volume systems and three-tier architectures where you do not necessarily maintain a connection to the database for your session. In this situation the client cannot actually maintain database locks as the connections are taken from a pool and you may not be using the same connection from one access to the next.
+- Pessimistic Locking:
+  1. is when you lock the record for your exclusive use until you have finished with it. It has much better integrity than optimistic locking but requires you to be careful with your application design to avoid Deadlocks. To use pessimistic locking you need either a direct connection to the database (as would typically be the case in a two tier client server application) or an externally available transaction ID that can be used independently of the connection.
+  2. In the latter case you open the transaction with the TxID and then reconnect using that ID. The DBMS maintains the locks and allows you to pick the session back up through the TxID. This is how distributed transactions using two-phase commit protocols (such as XA or COM+ Transactions) work.
+
+31. What are some other types of Indexes (vs B-Trees) ?
+
+- Forest of trees indexes: A forest of trees index is like a B-tree index, but it has multiple root nodes and potentially fewer levels. Multiple root nodes can alleviate root node contention, because more concurrent users can access the index. A forest of trees index can also improve the performance of a query by reducing the number of levels involved in buffer read operations.
+- R-tree indexes: Informix uses an R-tree index for spatial data (such as two-dimensional or three-dimensional data).
+- Indexes that DataBlade modules provide: DataBlade modules can contain user-defined data types. A DataBlade module can also provide a user-defined index for the new data type.
+
+32. Name some disadvantages of a Hash index.
+
+- Cannot avoid reading lines: Hash index only contains hash value and row pointer , Instead of storing field values , So you can't use the values in the index to avoid reading rows . however , Access to rows in memory is very fast , So in most cases, the impact on performance is not obvious .
+- Can't be used to sort: Hash index data is not stored in the order of index values , So it can't be used for sorting .
+- Cannot use partial index column matching to find: Hash index also does not support partial index column matching lookup , Because the hash index always uses the entire content of the index column to calculate the hash value . for example , In the data column （A,B） Create a hash index on , If the query has only columns of data A, The index cannot be used .
+- Only equivalent search is supported: Hash index only supports equivalent comparison query , Include =、IN()、<=>（ Be careful <> and <=> It's a different operation ）. No scope queries are supported , for example WHERE price>100.
+- There is Hash Conflict:
+  1. Accessing hash index data is very fast , Unless there are many hash conflicts （ Different index column values have the same hash value ）. When there is a hash conflict , The storage engine must traverse all row pointers in the linked list , Compare line by line , Until you find all the right lines .
+  2. meanwhile , When there are many hash conflicts , Some index maintenance operations are also expensive . for example , If at some point the selectivity is low （ There are a lot of hash conflicts ） Create a hash index on the column of , So when you delete a row from the table , The storage engine needs to traverse each row in the linked list corresponding to the hash value , Find and delete the reference to the corresponding line , The more conflicts , The more it costs .
+
+33. What is difference between B-Tree, R-Tree and Hash indexing ?
+
+- BTree (in fact B\*Tree) is an efficient ordered key-value map. Meaning:
+  1. given the key, a BTree index can quickly find a record,
+  2. a BTree can be scanned in order.
+  3. it's also easy to fetch all the keys (and records) within a range.
+- RTree is a spatial index which means that it can quickly identify close values in 2 or more dimensions. It's used in geographic databases for queries such as:
+  1. all points within X meters from (x,y)
+- Hash is an unordered key-value map. It's even more efficient than a BTree: O(1) instead of O(log n).
+  1. But it doesn't have any concept of order so it can't be used for sort operations or to fetch ranges.
+  2. As a side note, originally, MySQL only allowed Hash indexes on MEMORY tables; but I'm not sure if that has been changed over the years.
+
+34. What is Index Cardinality and why does it matter ?
+
+- Index cardinality refers to the uniqueness of values stored in a specified column within an index.
+- The query optimizer uses the index cardinality to generate an optimal query plan for a given query. It also uses the index cardinality to decide whether to use the index or not in the join operations.
+- If the query optimizer chooses the index with a low cardinality, it is may be more effective than scan rows without using the index.
+- To view the index cardinality, you use the SHOW INDEXES command.
+- For example, the following statement returns the index information of the orders table in the sample database with the cardinality (\*):
+
+```sql
+mysql> SHOW INDEXES FROM orders;
++--------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+
+| Table  | Non_unique | Key_name       | Seq_in_index | Column_name    | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible |
++--------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+
+| orders |          0 | PRIMARY        |            1 | orderNumber    | A         |         326 |     NULL |   NULL |      | BTREE      |         |               | YES     |
+| orders |          1 | customerNumber |            1 | customerNumber | A         |          98 |     NULL |   NULL |      | BTREE      |         |               | YES     |
++--------+------------+----------------+--------------+----------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+
+2 rows in set (0.01 sec)
+```
