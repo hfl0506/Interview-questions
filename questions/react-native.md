@@ -189,12 +189,13 @@ const styles = StyleSheet.create({
 20. How is React Native different from ReactJS ?
 
 - ReactJS React has as its main focus Web Development.
-  1. React’s virtual DOM is faster than the conventional full refresh model, since the virtual DOM refreshes only parts of the page.
-  2. We use div, p, span, etc. HTML tags to build the UI of the web application.
-  3. You can reuse code components in React, saving you a lot of time. (You can in React Native too.)
-  4. As a business: The rendering of your pages completely, from the server to the browser will improve the SEO of your web app.
-  5. It improves the debugging speed making your developer’s life easier.
-  6. You can use hybrid mobile app development, like Cordova or Ionic, to build mobile apps with React, but is more efficiently building mobile apps with React Native from many points.
+- Reactjs can be described as a base derivative of React DOM, for the web platform while React Native is a base derivative in itself, which means that the syntax and workflow remain the same, but components alter.
+- Reactjs, eventually, is a JavaScript library, which enables the programmer to create an engaging and high performing UI Layer while React Native is an entire framework for building cross-platform apps, be it web, iOS or Android.
+- In Reactjs, virtual DOM is used to render browser code in Reactjs while in React Native, native APIs are used to render components in mobile.
+- The apps developed with Reactjs renders HTML in UI while React Native uses JSX for rendering UI, which is nothing but javascript.
+- CSS is used for creating styling in Reactjs while a stylesheet is used for styling in React Native.
+- In Reactjs, the animation is possible, using CSS, just like web development while in React Native, an animated API is used for inducing animation across different components of the React Native application.
+- If the need is to build a high performing, dynamic, and responsive UI for web interfaces, then Reactjs is the best option while if the need is to give mobile apps a truly native feeling, then React Native is the best option.
 
 21. Explain the use of Flexbox in React Native ?
 
