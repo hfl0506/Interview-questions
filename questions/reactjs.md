@@ -79,7 +79,7 @@
      ```
 
 5. What are the advantages of ReactJS ?
-   - Blow are the advantages of ReactJS:
+   - Below are the advantages of ReactJS:
      1. Increases the application’s performance with Virtual DOM
      2. JSX makes code is easy to read and write
      3. It renders both on client and server side
